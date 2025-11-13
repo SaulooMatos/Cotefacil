@@ -84,6 +84,80 @@ O frontend é responsável por todas as telas dos 3 desafios:
 
 A aplicação utiliza **React Router** para gerenciar a navegação entre as rotas. Todas as páginas de desafios compartilham um layout comum (`LayoutDesafio`) que inclui um cabeçalho fixo com botões de navegação.
 
+## Desafio 1 – To-Do List
+
+### Implementação
+
+O **Desafio 1** é uma aplicação completa de lista de tarefas (To-Do List) implementada na rota `/desafio1`. A aplicação foi desenvolvida utilizando exclusivamente **componentes funcionais** e **hooks do React**.
+
+### Tecnologias e Recursos Utilizados
+
+- **React Hooks:**
+  - `useState` - Para gerenciar o estado das tarefas, formulário e filtros
+  - `useEffect` - Para carregar e salvar tarefas no localStorage automaticamente
+
+- **LocalStorage:**
+  - Persistência automática de dados no navegador
+  - Chave utilizada: `"cotefacil_desafio1_tarefas"`
+  - As tarefas são salvas automaticamente sempre que a lista é modificada
+
+- **CSS3:**
+  - Estilização responsiva com variáveis CSS
+  - Design moderno seguindo a paleta de cores do projeto
+  - Animações e transições suaves
+
+### Funcionalidades Implementadas
+
+1. **Adicionar Tarefa:**
+   - Campo obrigatório para título da tarefa
+   - Campo opcional para descrição
+   - Botão "Adicionar Tarefa" com validação
+   - Limpeza automática dos campos após adicionar
+
+2. **Editar Tarefa:**
+   - Modo de edição inline (a tarefa se transforma em um formulário)
+   - Permite editar título e descrição
+   - Botões "Salvar" e "Cancelar" para confirmar ou descartar alterações
+
+3. **Marcar como Concluída:**
+   - Checkbox para alternar entre pendente e concluída
+   - Visual diferenciado para tarefas concluídas (texto riscado, opacidade reduzida)
+   - Badge de status (Pendente/Concluída) com cores distintas
+
+4. **Remover Tarefa:**
+   - Botão de remover com ícone de lixeira
+   - Confirmação antes de remover
+
+5. **Filtros:**
+   - Botões para filtrar tarefas:
+     - **Todas** - Mostra todas as tarefas
+     - **Pendentes** - Mostra apenas tarefas não concluídas
+     - **Concluídas** - Mostra apenas tarefas concluídas
+   - Contador de tarefas em cada filtro
+
+6. **Estatísticas:**
+   - Exibição de estatísticas:
+     - Total de tarefas
+     - Tarefas pendentes
+     - Tarefas concluídas
+
+7. **Persistência:**
+   - Todas as tarefas são automaticamente salvas no localStorage
+   - Ao recarregar a página, as tarefas são restauradas automaticamente
+
+### Estrutura de Componentes
+
+- **`src/pages/Desafio1.jsx`** - Componente principal que gerencia o estado e a lógica da aplicação
+- **`src/components/Todo/TaskItem.jsx`** - Componente que renderiza cada tarefa individual
+- **`src/pages/Desafio1.css`** - Estilos específicos da página
+- **`src/components/Todo/TaskItem.css`** - Estilos do componente de tarefa
+
+### Acesso
+
+Para acessar a aplicação To-Do List:
+- Navegue para `http://localhost:3000/desafio1` após iniciar o frontend
+- Ou clique no botão "Desafio 1 – To-Do List" na tela inicial
+
 ### Backend
 
 O backend foi criado em Node.js com Express para facilitar futuras integrações e comunicação com APIs externas. Atualmente, possui:
