@@ -1,0 +1,21 @@
+{
+  "name": "cotefacil-backend",
+  "version": "1.0.0",
+  "description": "Backend para o Grande Desafio Técnico Cotefácil",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "Saulo Henrique de Oliveira Matos",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
+

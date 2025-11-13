@@ -1,0 +1,54 @@
+.desafio-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.desafio-title {
+  font-size: 2.5rem;
+  color: var(--lime-green);
+  margin-bottom: var(--spacing-md);
+  font-weight: 700;
+}
+
+.desafio-subtitle {
+  font-size: 1.3rem;
+  color: var(--cinza-claro);
+  margin-bottom: var(--spacing-lg);
+  font-weight: 500;
+}
+
+.desafio-content {
+  font-size: 1.1rem;
+  color: var(--preto);
+  line-height: 1.8;
+}
+
+@media (max-width: 768px) {
+  .desafio-title {
+    font-size: 2rem;
+  }
+  
+  .desafio-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .desafio-content {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .desafio-container {
+    padding: 0 var(--spacing-sm);
+  }
+  
+  .desafio-title {
+    font-size: 1.5rem;
+  }
+  
+  .desafio-subtitle {
+    font-size: 1rem;
+  }
+}
+

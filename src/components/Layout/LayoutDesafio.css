@@ -1,0 +1,198 @@
+.layout-desafio {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-fixo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, var(--lime-green) 0%, var(--lime-green-dark) 100%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 1rem 0;
+  backdrop-filter: blur(10px);
+  border-bottom: 3px solid var(--roxo);
+}
+
+.header-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-header {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, var(--roxo) 0%, var(--roxo-dark) 100%);
+  color: var(--branco);
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  min-width: 140px;
+  text-align: center;
+}
+
+.btn-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-header:hover::before {
+  left: 100%;
+}
+
+.btn-header:hover {
+  background: linear-gradient(135deg, var(--roxo-dark) 0%, var(--roxo) 100%);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.5);
+  border-color: var(--branco);
+}
+
+.btn-header:active {
+  transform: translateY(-1px) scale(1.02);
+  transition: all 0.1s ease;
+}
+
+.btn-header.active {
+  background: linear-gradient(135deg, var(--branco) 0%, #f8f8f8 100%);
+  color: var(--roxo);
+  border-color: var(--roxo);
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4), inset 0 2px 4px rgba(139, 92, 246, 0.1);
+  font-weight: 800;
+  transform: scale(1.05);
+}
+
+.btn-header.active:hover {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  transform: translateY(-3px) scale(1.08);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.5), inset 0 2px 4px rgba(139, 92, 246, 0.1);
+}
+
+/* Botão Voltar com estilo especial */
+.btn-header.btn-voltar,
+.btn-header:first-child {
+  background: linear-gradient(135deg, var(--cinza-claro) 0%, #888888 100%);
+  box-shadow: 0 4px 12px rgba(160, 160, 160, 0.3);
+  min-width: 100px;
+  font-weight: 600;
+}
+
+.btn-header.btn-voltar:hover,
+.btn-header:first-child:hover {
+  background: linear-gradient(135deg, #888888 0%, var(--cinza-claro) 100%);
+  box-shadow: 0 8px 20px rgba(160, 160, 160, 0.5);
+  transform: translateY(-3px) scale(1.05);
+}
+
+.main-content {
+  margin-top: 90px;
+  flex: 1;
+  padding: var(--spacing-lg) 0;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsividade Tablet */
+@media (max-width: 768px) {
+  .header-fixo {
+    padding: 0.8rem 0;
+    border-bottom-width: 2px;
+  }
+  
+  .header-container {
+    padding: 0 var(--spacing-sm);
+    gap: 0.6rem;
+  }
+  
+  .btn-header {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.85rem;
+    min-width: 120px;
+    border-radius: 10px;
+  }
+  
+  .main-content {
+    margin-top: 110px;
+  }
+}
+
+/* Responsividade Mobile */
+@media (max-width: 480px) {
+  .header-fixo {
+    padding: 0.6rem 0;
+  }
+  
+  .header-container {
+    flex-direction: row;
+    gap: 0.4rem;
+    padding: 0 0.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .header-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .btn-header {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    min-width: auto;
+    white-space: nowrap;
+    flex-shrink: 0;
+    border-radius: 8px;
+  }
+  
+  .btn-header:first-child {
+    min-width: 80px;
+  }
+  
+  .main-content {
+    margin-top: 100px;
+  }
+}
+
+/* Responsividade Mobile Pequeno */
+@media (max-width: 360px) {
+  .btn-header {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.7rem;
+  }
+  
+  .header-container {
+    gap: 0.3rem;
+  }
+}
+
