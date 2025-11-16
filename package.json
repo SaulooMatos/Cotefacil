@@ -16,6 +16,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:pages": "react-scripts build && npm run copy-to-docs",
+    "copy-to-docs": "node scripts/copy-to-docs.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
