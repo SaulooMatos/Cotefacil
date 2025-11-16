@@ -44,6 +44,14 @@ copyRecursiveSync(buildDir, docsDir);
 const nojekyllPath = path.join(docsDir, '.nojekyll');
 fs.writeFileSync(nojekyllPath, '');
 
+// Copia index.html como 404.html (necessário para SPAs no GitHub Pages)
+const indexHtmlPath = path.join(docsDir, 'index.html');
+const notFoundHtmlPath = path.join(docsDir, '404.html');
+if (fs.existsSync(indexHtmlPath)) {
+  fs.copyFileSync(indexHtmlPath, notFoundHtmlPath);
+  console.log('✓ Arquivo 404.html criado (cópia do index.html).');
+}
+
 console.log('✓ Arquivos copiados com sucesso para a pasta "docs"!');
 console.log('✓ Arquivo .nojekyll criado.');
 
