@@ -225,6 +225,33 @@
 /* Galeria */
 .gallery-section {
   margin-top: 2rem;
+  padding: 2rem;
+  background: var(--branco);
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Seção de Imagens Pesquisadas */
+.searched-images-section {
+  border: 3px solid var(--roxo);
+  margin-bottom: 2rem;
+}
+
+.searched-images-section .section-title {
+  color: var(--roxo);
+  border-bottom: 2px solid var(--roxo);
+  padding-bottom: 0.5rem;
+}
+
+/* Seção de Minha Galeria (Imagens Locais) */
+.local-gallery-section {
+  border: 3px solid var(--lime-green);
+}
+
+.local-gallery-section .section-title {
+  color: var(--lime-green);
+  border-bottom: 2px solid var(--lime-green);
+  padding-bottom: 0.5rem;
 }
 
 .gallery-header {
@@ -365,9 +392,7 @@
 }
 
 .delete-image-btn {
-  position: absolute;
-  bottom: 0.5rem;
-  right: 0.5rem;
+  position: relative;
   background: rgba(220, 53, 69, 0.9);
   color: var(--branco);
   border: none;
@@ -380,7 +405,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -409,6 +433,52 @@
   border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 700;
+  z-index: 10;
+}
+
+.saved-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: var(--roxo);
+  color: var(--branco);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  z-index: 10;
+}
+
+.image-actions {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.save-image-btn {
+  position: relative;
+  background: rgba(50, 205, 50, 0.9);
+  color: var(--branco);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.save-image-btn:hover {
+  background: rgba(50, 205, 50, 1);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(50, 205, 50, 0.5);
 }
 
 .image-info {

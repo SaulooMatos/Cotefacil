@@ -53,7 +53,7 @@ const TaskItem = ({ task, onEdit, onDelete, onChangeStatus }) => {
     const statusMap = {
       'pendente': 'Pendente',
       'concluida': 'Concluída',
-      'standBy': 'Stand By'
+      'emProgresso': 'Em Progresso'
     };
     return statusMap[status] || 'Pendente';
   };
@@ -184,7 +184,7 @@ const TaskItem = ({ task, onEdit, onDelete, onChangeStatus }) => {
             >
               <option value="pendente">⏳ Pendente</option>
               <option value="concluida">✅ Concluída</option>
-              <option value="standBy">⏸️ Stand By</option>
+              <option value="emProgresso">🚀 Em Progresso</option>
             </select>
           </div>
         </div>

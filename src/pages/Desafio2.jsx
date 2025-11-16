@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import LayoutDesafio from '../components/Layout/LayoutDesafio';
 import './Desafio2.css';
 
-const API_BASE_URL = 'http://localhost:3001';
+const PEXELS_API_KEY = process.env.REACT_APP_PEXELS_API_KEY;
+const PEXELS_API_URL = 'https://api.pexels.com/v1';
+const USE_PEXELS = !!PEXELS_API_KEY;
+const BACKEND_API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
 
 const Desafio2 = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -11,11 +14,11 @@ const Desafio2 = () => {
   const [localImages, setLocalImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [imageSourceType, setImageSourceType] = useState('url'); // 'url' ou 'file'
+  const [imageSourceType, setImageSourceType] = useState('url');
   const [selectedFile, setSelectedFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
-  const [dateFilter, setDateFilter] = useState(''); // Filtro de data (formato YYYY-MM-DD)
-  const [themeFilter, setThemeFilter] = useState(''); // Filtro de tema
+  const [dateFilter, setDateFilter] = useState('');
+  const [themeFilter, setThemeFilter] = useState('');
   
   const [formData, setFormData] = useState({
     url: '',
@@ -24,7 +27,9 @@ const Desafio2 = () => {
     tema: ''
   });
 
-  // Opções de tema disponíveis
+  const searchedImagesRef = useRef(null);
+  const localGalleryRef = useRef(null);
+
   const temasDisponiveis = [
     { value: '', label: 'Selecione um tema' },
     { value: 'Paisagem', label: 'Paisagem' },
@@ -34,7 +39,6 @@ const Desafio2 = () => {
     { value: 'Foto aleatória', label: 'Foto aleatória' }
   ];
 
-  // Carregar imagens locais do localStorage
   useEffect(() => {
     const savedImages = localStorage.getItem('desafio2_local_images');
     if (savedImages) {
@@ -46,7 +50,6 @@ const Desafio2 = () => {
     }
   }, []);
 
-  // Buscar imagens ao carregar a página pela primeira vez
   useEffect(() => {
     buscarImagens('nature');
   }, []);
@@ -60,33 +63,140 @@ const Desafio2 = () => {
     setLoading(true);
     setError('');
 
+    if (USE_PEXELS) {
+      try {
+        const response = await fetch(
+          `${PEXELS_API_URL}/search?query=${encodeURIComponent(termo)}&per_page=20`,
+          {
+            headers: {
+              'Authorization': PEXELS_API_KEY
+            }
+          }
+        );
+        
+        if (response.ok) {
+          const data = await response.json();
+          
+          const formattedResults = (data.photos || []).map((img, index) => ({
+            id: `pexels-${img.id || index}`,
+            urls: {
+              small: img.src.medium,
+              regular: img.src.large,
+              full: img.src.original
+            },
+            user: {
+              name: img.photographer || 'Fotógrafo Desconhecido',
+              username: img.photographer_id || 'unknown'
+            },
+            description: img.alt || `Foto de ${termo}`,
+            alt_description: img.alt || `Foto de ${termo}`,
+            tags: []
+          }));
+          
+          setImages(formattedResults);
+          
+          // Scroll automático para a seção de imagens pesquisadas
+          setTimeout(() => {
+            if (searchedImagesRef.current) {
+              searchedImagesRef.current.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+              });
+            }
+          }, 300);
+          
+          setLoading(false);
+          return;
+        }
+      } catch (err) {
+        console.log('Pexels não disponível, usando Lorem Picsum');
+      }
+    }
+
     try {
-      const response = await fetch(`${API_BASE_URL}/api/images/search?q=${encodeURIComponent(termo)}`);
+      const backendResponse = await fetch(
+        `${BACKEND_API_URL}/api/images/search?q=${encodeURIComponent(termo)}&per_page=20`
+      );
       
-      if (!response.ok) {
-        // Se o servidor retornar erro, mas não for erro de conexão, mostra mensagem genérica
-        if (response.status >= 500) {
-          throw new Error('Erro no servidor. Tente novamente mais tarde.');
-        } else {
-          throw new Error('Não foi possível buscar imagens.');
+      if (backendResponse.ok) {
+        const backendData = await backendResponse.json();
+        
+        if (backendData.results && backendData.results.length > 0) {
+          const formattedResults = backendData.results.map((img) => ({
+            id: `unsplash-${img.id}`,
+            urls: {
+              small: img.urls.small,
+              regular: img.urls.regular,
+              full: img.urls.full || img.urls.regular
+            },
+            user: {
+              name: img.user.name,
+              username: img.user.username
+            },
+            description: img.description || `Foto de ${termo}`,
+            alt_description: img.alt_description || img.description || `Foto de ${termo}`,
+            tags: img.tags || []
+          }));
+          
+          setImages(formattedResults);
+          
+          // Scroll automático para a seção de imagens pesquisadas
+          setTimeout(() => {
+            if (searchedImagesRef.current) {
+              searchedImagesRef.current.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+              });
+            }
+          }, 300);
+          
+          setLoading(false);
+          return;
         }
       }
+    } catch (backendErr) {
+      console.log('Backend não disponível, usando Lorem Picsum como fallback');
+    }
 
-      const data = await response.json();
-      setImages(data.results || []);
+    try {
+      const seed = termo.toLowerCase().replace(/\s+/g, '');
+      const images = [];
+      
+      for (let i = 0; i < 20; i++) {
+        const hash = seed.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        const imageId = (hash + i) % 1000;
+        
+        images.push({
+          id: `picsum-${imageId}-${i}`,
+          urls: {
+            small: `https://picsum.photos/seed/${seed}${i}/400/300`,
+            regular: `https://picsum.photos/seed/${seed}${i}/800/600`,
+            full: `https://picsum.photos/seed/${seed}${i}/1920/1080`
+          },
+          user: {
+            name: 'Fotógrafo',
+            username: 'picsum'
+          },
+          description: `Imagem relacionada a ${termo}`,
+          alt_description: `Imagem relacionada a ${termo}`,
+          tags: []
+        });
+      }
+      
+      setImages(images);
+      setError('');
+      
+      setTimeout(() => {
+        if (searchedImagesRef.current) {
+          searchedImagesRef.current.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+          });
+        }
+      }, 300);
     } catch (err) {
       console.error('Erro ao buscar imagens:', err);
-      // Verifica se é erro de conexão (servidor não está rodando)
-      const errorMessage = err.message || err.toString();
-      if (errorMessage.includes('Failed to fetch') || 
-          errorMessage.includes('NetworkError') || 
-          errorMessage.includes('Network request failed') ||
-          errorMessage.includes('ERR_INTERNET_DISCONNECTED') ||
-          errorMessage.includes('ERR_CONNECTION_REFUSED')) {
-        setError('Não foi possível conectar ao servidor. Você pode adicionar imagens manualmente usando a opção abaixo.');
-      } else {
-        setError(err.message || 'Erro ao buscar imagens.');
-      }
+      setError('Erro ao buscar imagens. Verifique sua conexão e tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -97,7 +207,6 @@ const Desafio2 = () => {
     buscarImagens();
   };
 
-  // Converter arquivo para base64
   const fileToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -107,17 +216,14 @@ const Desafio2 = () => {
     });
   };
 
-  // Handler para seleção de arquivo
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Validar tipo de arquivo
       if (!file.type.startsWith('image/')) {
         setError('Por favor, selecione um arquivo de imagem válido.');
         return;
       }
 
-      // Validar tamanho (máximo 5MB)
       if (file.size > 5 * 1024 * 1024) {
         setError('A imagem deve ter no máximo 5MB.');
         return;
@@ -172,16 +278,15 @@ const Desafio2 = () => {
       description: formData.titulo,
       alt_description: formData.titulo,
       isLocal: true,
-      tema: formData.tema, // Salva o tema da imagem
-      createdAt: new Date().toISOString(), // Salva a data de criação
-      createdAtTimestamp: Date.now() // Timestamp para facilitar comparações
+      tema: formData.tema,
+      createdAt: new Date().toISOString(),
+      createdAtTimestamp: Date.now()
     };
 
     const novasImagens = [...localImages, novaImagem];
     setLocalImages(novasImagens);
     localStorage.setItem('desafio2_local_images', JSON.stringify(novasImagens));
     
-    // Limpar formulário
     setFormData({ url: '', titulo: '', autor: '', tema: '' });
     setSelectedFile(null);
     setFilePreview(null);
@@ -189,7 +294,42 @@ const Desafio2 = () => {
     setError('');
   };
 
-  // Função para deletar imagem local
+  const handleSaveImage = (image) => {
+    const jaSalva = localImages.some(img => 
+      img.id === image.id || 
+      (img.urls && img.urls.regular === image.urls.regular)
+    );
+
+    if (jaSalva) {
+      alert('Esta imagem já está salva na sua galeria!');
+      return;
+    }
+
+    const imagemParaSalvar = {
+      ...image,
+      id: `local-${Date.now()}-${image.id}`,
+      isLocal: true,
+      createdAt: new Date().toISOString(),
+      createdAtTimestamp: Date.now(),
+      tema: 'Foto aleatória'
+    };
+
+    const novasImagens = [...localImages, imagemParaSalvar];
+    setLocalImages(novasImagens);
+    localStorage.setItem('desafio2_local_images', JSON.stringify(novasImagens));
+    
+    alert('Imagem salva com sucesso na sua galeria!');
+    
+    setTimeout(() => {
+      if (localGalleryRef.current) {
+        localGalleryRef.current.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
+      }
+    }, 500);
+  };
+
   const handleDeleteImage = (imageId) => {
     if (window.confirm('Tem certeza que deseja deletar esta imagem?')) {
       const novasImagens = localImages.filter(img => img.id !== imageId);
@@ -198,13 +338,11 @@ const Desafio2 = () => {
     }
   };
 
-  // Função para filtrar imagens por data e tema
-  const filterImages = (imagesList) => {
+  const filterLocalImages = (imagesList) => {
     return imagesList.filter(img => {
-      // Filtro por data (apenas para imagens locais)
       if (dateFilter) {
         if (!img.isLocal || !img.createdAt) {
-          return false; // Se há filtro de data, mostra apenas imagens locais com data
+          return false;
         }
         const imageDate = new Date(img.createdAt).toISOString().split('T')[0];
         if (imageDate !== dateFilter) {
@@ -212,39 +350,29 @@ const Desafio2 = () => {
         }
       }
 
-      // Filtro por tema (apenas para imagens locais)
       if (themeFilter) {
         if (!img.isLocal || !img.tema) {
-          return false; // Se há filtro de tema, mostra apenas imagens locais com tema
+          return false;
         }
         if (img.tema !== themeFilter) {
           return false;
         }
       }
 
-      // Se não há filtros, retorna todas as imagens
-      // Se há filtros mas a imagem é da API, só mostra se não há filtros aplicados
-      if (!dateFilter && !themeFilter) {
-        return true; // Mostra todas quando não há filtros
-      }
-      
-      // Se há filtros, mostra apenas imagens locais que passaram nos filtros
-      return img.isLocal;
+      return true;
     });
   };
 
-  // Combinar imagens e aplicar filtro
-  const todasImagens = filterImages([...images, ...localImages]);
+  const imagensLocaisFiltradas = filterLocalImages(localImages);
 
   return (
     <LayoutDesafio>
       <div className="desafio2-container">
         <h2 className="desafio2-title">Desafio 2 – Galeria de Imagens</h2>
         <p className="desafio2-subtitle">
-          Galeria de imagens utilizando API pública (Unsplash) via React Router
+          Galeria de imagens utilizando APIs reais (Pexels, Unsplash ou Lorem Picsum)
         </p>
 
-        {/* Formulário de Busca */}
         <div className="search-section">
           <form className="search-form" onSubmit={handleSubmit}>
             <input
@@ -261,11 +389,9 @@ const Desafio2 = () => {
           {error && <p className="error-message">{error}</p>}
         </div>
 
-        {/* Formulário para Adicionar Imagem Manualmente */}
         <div className="add-image-section">
           <h3 className="section-title">➕ Adicionar Imagem Manualmente</h3>
           
-          {/* Seletor de tipo de origem */}
           <div className="source-type-selector">
             <button
               type="button"
@@ -356,7 +482,6 @@ const Desafio2 = () => {
                 />
               </div>
             )}
-            {/* Campo de Tema */}
             <div className="theme-selector-row">
               <label htmlFor="tema-select" className="theme-label">
                 🎨 Tema da imagem:
@@ -379,78 +504,110 @@ const Desafio2 = () => {
           </form>
         </div>
 
-        {/* Galeria de Imagens */}
-        <div className="gallery-section">
+        {images.length > 0 && (
+          <div className="gallery-section searched-images-section" ref={searchedImagesRef}>
+            <div className="gallery-header">
+              <h3 className="section-title">
+                🔍 Imagens Pesquisadas ({images.length} {images.length === 1 ? 'imagem' : 'imagens'})
+              </h3>
+            </div>
+            
+            {loading ? (
+              <div className="loading">Carregando imagens...</div>
+            ) : (
+              <div className="gallery-grid">
+                {images.map((image) => {
+                  const jaSalva = localImages.some(img => 
+                    img.id === image.id || 
+                    (img.urls && img.urls.regular === image.urls.regular)
+                  );
+                  
+                  return (
+                    <ImageCard 
+                      key={image.id} 
+                      image={image} 
+                      onDelete={null}
+                      onSave={!jaSalva ? () => handleSaveImage(image) : null}
+                      isSaved={jaSalva}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className="gallery-section local-gallery-section" ref={localGalleryRef}>
           <div className="gallery-header">
             <h3 className="section-title">
-              📸 Galeria ({todasImagens.length} {todasImagens.length === 1 ? 'imagem' : 'imagens'})
+              💾 Minha Galeria ({imagensLocaisFiltradas.length} {imagensLocaisFiltradas.length === 1 ? 'imagem' : 'imagens'})
             </h3>
             
-            {/* Filtros de Data e Tema */}
-            <div className="filters-container">
-              <div className="filter-group">
-                <label htmlFor="date-filter" className="filter-label">
-                  📅 Filtrar por data:
-                </label>
-                <input
-                  id="date-filter"
-                  type="date"
-                  className="filter-input"
-                  value={dateFilter}
-                  onChange={(e) => setDateFilter(e.target.value)}
-                />
+            {localImages.length > 0 && (
+              <div className="filters-container">
+                <div className="filter-group">
+                  <label htmlFor="date-filter" className="filter-label">
+                    📅 Filtrar por data:
+                  </label>
+                  <input
+                    id="date-filter"
+                    type="date"
+                    className="filter-input"
+                    value={dateFilter}
+                    onChange={(e) => setDateFilter(e.target.value)}
+                  />
+                </div>
+                
+                <div className="filter-group">
+                  <label htmlFor="theme-filter" className="filter-label">
+                    🎨 Filtrar por tema:
+                  </label>
+                  <select
+                    id="theme-filter"
+                    className="filter-select"
+                    value={themeFilter}
+                    onChange={(e) => setThemeFilter(e.target.value)}
+                  >
+                    <option value="">Todos os temas</option>
+                    {temasDisponiveis.slice(1).map((tema) => (
+                      <option key={tema.value} value={tema.value}>
+                        {tema.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                
+                {(dateFilter || themeFilter) && (
+                  <button
+                    type="button"
+                    className="clear-filters-btn"
+                    onClick={() => {
+                      setDateFilter('');
+                      setThemeFilter('');
+                    }}
+                  >
+                    ✕ Limpar filtros
+                  </button>
+                )}
               </div>
-              
-              <div className="filter-group">
-                <label htmlFor="theme-filter" className="filter-label">
-                  🎨 Filtrar por tema:
-                </label>
-                <select
-                  id="theme-filter"
-                  className="filter-select"
-                  value={themeFilter}
-                  onChange={(e) => setThemeFilter(e.target.value)}
-                >
-                  <option value="">Todos os temas</option>
-                  {temasDisponiveis.slice(1).map((tema) => (
-                    <option key={tema.value} value={tema.value}>
-                      {tema.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              
-              {(dateFilter || themeFilter) && (
-                <button
-                  type="button"
-                  className="clear-filters-btn"
-                  onClick={() => {
-                    setDateFilter('');
-                    setThemeFilter('');
-                  }}
-                >
-                  ✕ Limpar filtros
-                </button>
-              )}
-            </div>
+            )}
           </div>
           
-          {loading ? (
-            <div className="loading">Carregando imagens...</div>
-          ) : todasImagens.length === 0 ? (
+          {imagensLocaisFiltradas.length === 0 ? (
             <div className="empty-gallery">
-              <p>Nenhuma imagem encontrada. Faça uma busca ou adicione uma imagem manualmente.</p>
-              {(dateFilter || themeFilter) && (
-                <p className="filter-info">Tente remover os filtros para ver mais imagens.</p>
-              )}
+              <p>
+                {localImages.length === 0 
+                  ? 'Nenhuma imagem salva ainda. Adicione imagens usando o formulário acima.'
+                  : 'Nenhuma imagem encontrada com os filtros aplicados. Tente remover os filtros.'}
+              </p>
             </div>
           ) : (
             <div className="gallery-grid">
-              {todasImagens.map((image) => (
+              {imagensLocaisFiltradas.map((image) => (
                 <ImageCard 
                   key={image.id} 
                   image={image} 
-                  onDelete={image.isLocal ? handleDeleteImage : null}
+                  onDelete={handleDeleteImage}
                 />
               ))}
             </div>
@@ -461,8 +618,7 @@ const Desafio2 = () => {
   );
 };
 
-// Componente de Card de Imagem
-const ImageCard = ({ image, onDelete }) => {
+const ImageCard = ({ image, onDelete, onSave, isSaved }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -470,13 +626,19 @@ const ImageCard = ({ image, onDelete }) => {
   };
 
   const handleDelete = (e) => {
-    e.stopPropagation(); // Previne que o clique vá para o card
+    e.stopPropagation();
     if (onDelete) {
       onDelete(image.id);
     }
   };
 
-  // Formatar data para exibição
+  const handleSave = (e) => {
+    e.stopPropagation();
+    if (onSave) {
+      onSave();
+    }
+  };
+
   const formatDate = (dateString) => {
     if (!dateString) return '';
     try {
@@ -500,15 +662,29 @@ const ImageCard = ({ image, onDelete }) => {
           className="image-thumbnail"
         />
         {image.isLocal && <span className="local-badge">Local</span>}
-        {onDelete && (
-          <button
-            className="delete-image-btn"
-            onClick={handleDelete}
-            title="Deletar imagem"
-          >
-            🗑️
-          </button>
+        {isSaved && !image.isLocal && (
+          <span className="saved-badge">Salva</span>
         )}
+        <div className="image-actions">
+          {onSave && !isSaved && (
+            <button
+              className="save-image-btn"
+              onClick={handleSave}
+              title="Salvar na galeria"
+            >
+              💾
+            </button>
+          )}
+          {onDelete && (
+            <button
+              className="delete-image-btn"
+              onClick={handleDelete}
+              title="Deletar imagem"
+            >
+              🗑️
+            </button>
+          )}
+        </div>
       </div>
       <div className="image-info">
         <p className="image-author">📷 {image.user.name}</p>
@@ -526,7 +702,6 @@ const ImageCard = ({ image, onDelete }) => {
   );
 };
 
-// Componente de Detalhes da Imagem
 export const ImageDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -553,25 +728,107 @@ export const ImageDetails = () => {
           }
         }
 
-        // Se não for local, busca na API
-        const response = await fetch(`${API_BASE_URL}/api/images/${id}`);
+        const imageId = id.toString();
         
-        if (!response.ok) {
-          throw new Error('Imagem não encontrada');
+        if (imageId.startsWith('pexels-') && USE_PEXELS) {
+          try {
+            const pexelsId = imageId.replace('pexels-', '');
+            const response = await fetch(
+              `${PEXELS_API_URL}/photos/${pexelsId}`,
+              {
+                headers: {
+                  'Authorization': PEXELS_API_KEY
+                }
+              }
+            );
+            
+            if (response.ok) {
+              const img = await response.json();
+              
+              const formattedImage = {
+                id: img.id,
+                urls: {
+                  small: img.src.medium,
+                  regular: img.src.large,
+                  full: img.src.original
+                },
+                user: {
+                  name: img.photographer || 'Fotógrafo Desconhecido',
+                  username: img.photographer_id || 'unknown'
+                },
+                description: img.alt || 'Imagem',
+                alt_description: img.alt || 'Imagem',
+                tags: []
+              };
+              
+              setImage(formattedImage);
+              setLoading(false);
+              return;
+            }
+          } catch (apiError) {
+            console.log('Erro ao buscar do Pexels, tentando backend');
+          }
         }
 
-        const data = await response.json();
-        setImage(data);
+        if (imageId.startsWith('unsplash-')) {
+          try {
+            const unsplashId = imageId.replace('unsplash-', '');
+            const response = await fetch(`${BACKEND_API_URL}/api/images/${unsplashId}`);
+            
+            if (response.ok) {
+              const img = await response.json();
+              
+              const formattedImage = {
+                id: img.id,
+                urls: {
+                  small: img.urls.small || img.urls.regular,
+                  regular: img.urls.regular,
+                  full: img.urls.full || img.urls.regular
+                },
+                user: {
+                  name: img.user.name,
+                  username: img.user.username
+                },
+                description: img.description || 'Imagem',
+                alt_description: img.alt_description || img.description || 'Imagem',
+                tags: img.tags || []
+              };
+              
+              setImage(formattedImage);
+              setLoading(false);
+              return;
+            }
+          } catch (backendError) {
+            console.log('Erro ao buscar do backend, usando fallback');
+          }
+        }
+        
+        const picsumId = imageId.replace(/^picsum-/, '').split('-')[0] || '1';
+        const formattedImage = {
+          id: id,
+          urls: {
+            small: `https://picsum.photos/id/${picsumId}/400/300`,
+            regular: `https://picsum.photos/id/${picsumId}/800/600`,
+            full: `https://picsum.photos/id/${picsumId}/1920/1080`
+          },
+          user: {
+            name: 'Fotógrafo',
+            username: 'picsum'
+          },
+          description: 'Imagem',
+          alt_description: 'Imagem',
+          tags: []
+        };
+        
+        setImage(formattedImage);
       } catch (err) {
         console.error('Erro ao carregar imagem:', err);
-        // Verifica se é erro de conexão
         const errorMessage = err.message || err.toString();
         if (errorMessage.includes('Failed to fetch') || 
             errorMessage.includes('NetworkError') || 
             errorMessage.includes('Network request failed') ||
-            errorMessage.includes('ERR_INTERNET_DISCONNECTED') ||
-            errorMessage.includes('ERR_CONNECTION_REFUSED')) {
-          setError('Não foi possível conectar ao servidor para carregar esta imagem.');
+            errorMessage.includes('ERR_INTERNET_DISCONNECTED')) {
+          setError('Erro de conexão. Verifique sua internet e tente novamente.');
         } else {
           setError(err.message || 'Erro ao carregar imagem.');
         }

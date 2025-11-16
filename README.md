@@ -28,48 +28,44 @@ O projeto está organizado em duas partes principais:
 - Node.js instalado (versão 14 ou superior)
 - npm ou yarn instalado
 
-### Passo 1: Instalar Dependências do Backend
+### Passo 1: Instalar Dependências
 
-Navegue até a pasta `backend` e instale as dependências:
-
+**Backend:**
 ```bash
 cd backend
 npm install
 ```
 
-### Passo 2: Instalar Dependências do Frontend
-
-Na raiz do projeto, instale as dependências do frontend:
-
+**Frontend:**
 ```bash
+# Na raiz do projeto
 npm install
 ```
 
-### Passo 3: Iniciar o Backend
+### Passo 2: Iniciar o Backend
 
-No terminal, dentro da pasta `backend`, execute:
+Em um terminal, navegue até a pasta `backend` e execute:
 
 ```bash
+cd backend
 npm run dev
 ```
 
-O servidor backend estará rodando na porta **3001** (ou na porta definida pela variável de ambiente `PORT`).
+O servidor backend estará rodando na porta **3001**.
 
-Você pode testar se o backend está funcionando acessando:
-- `http://localhost:3001/api/health` - Deve retornar `{ "status": "ok" }`
+**Nota:** O arquivo `.env` já está configurado na pasta `backend` com as credenciais da API Unsplash. O backend utilizará a API real para buscar imagens no Desafio 2.
 
-### Passo 4: Iniciar o Frontend
+### Passo 3: Iniciar o Frontend
 
-Em um novo terminal, na raiz do projeto, execute:
+Em um **novo terminal**, na raiz do projeto, execute:
 
 ```bash
 npm start
 ```
 
-O frontend estará rodando na porta **3000** (padrão do Create React App).
+O frontend estará rodando na porta **3000** e abrirá automaticamente no navegador.
 
-Acesse no navegador:
-- `http://localhost:3000`
+**Acesse:** `http://localhost:3000`
 
 ## Visão Técnica
 

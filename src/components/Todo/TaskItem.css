@@ -39,9 +39,9 @@
   color: var(--cinza-claro);
 }
 
-.task-item-standBy {
-  border-left: 4px solid #6c757d;
-  background: #f8f9fa;
+.task-item-emProgresso {
+  border-left: 4px solid #007bff;
+  background: rgba(0, 123, 255, 0.05);
 }
 
 .task-content {

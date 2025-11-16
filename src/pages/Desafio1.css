@@ -1,475 +1,544 @@
-.desafio-container {
-  width: 100%;
-  max-width: 100%;
+.desafio1-container {
+  max-width: 800px;
   margin: 0 auto;
-  padding: 0 1rem;
-  overflow-x: hidden;
+  padding: 2rem 1rem;
+  width: 100%;
   box-sizing: border-box;
-  position: relative;
 }
 
-.desafio-title {
+.desafio1-title {
   font-size: 2.5rem;
   color: var(--lime-green);
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
   font-weight: 700;
   text-align: center;
 }
 
-/* Layout de duas colunas */
-.desafio-layout {
-  display: grid;
-  grid-template-columns: minmax(320px, 400px) minmax(0, 1fr);
-  gap: 1.2rem;
-  align-items: start;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow-x: hidden;
+.desafio1-subtitle {
+  font-size: 1.1rem;
+  color: var(--cinza-claro);
+  text-align: center;
+  margin-bottom: 2.5rem;
 }
 
-/* Coluna Esquerda - Formulário */
-.desafio-left {
-  position: sticky;
-  top: 2rem;
-  min-width: 0;
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
-.form-card {
+/* Formulário de Adicionar Tarefa */
+.todo-form-container {
   background: var(--branco);
   border: 3px solid var(--lime-green);
   border-radius: 20px;
-  padding: 2.5rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow-x: hidden;
-}
-
-.form-card-title {
-  font-size: 1.5rem;
-  color: var(--roxo);
-  margin-bottom: 1.5rem;
-  font-weight: 700;
-  text-align: center;
 }
 
 .todo-form {
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 1rem;
+  align-items: center;
 }
 
-.form-label {
-  display: block;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--preto);
-  margin-bottom: 0.5rem;
-}
-
-.required {
-  color: #dc3545;
-}
-
-.form-input,
-.form-textarea,
-.form-select {
-  width: 100%;
-  padding: 0.75rem 1rem;
+.todo-input {
+  flex: 1;
+  padding: 1rem 1.5rem;
   border: 2px solid #e0e0e0;
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 1rem;
   font-family: inherit;
   transition: all 0.3s ease;
   background: var(--branco);
 }
 
-.form-input:focus,
-.form-textarea:focus,
-.form-select:focus {
+.todo-input:focus {
   outline: none;
   border-color: var(--roxo);
   box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
 }
 
-.form-textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
-.form-select {
-  cursor: pointer;
-}
-
-.btn-add {
-  width: 100%;
+.btn-add-task {
   padding: 1rem 2rem;
   background: linear-gradient(135deg, var(--roxo) 0%, var(--roxo-dark) 100%);
   color: var(--branco);
   border: none;
   border-radius: 12px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
-  margin-top: 0.5rem;
+  white-space: nowrap;
 }
 
-.btn-add:hover {
+.btn-add-task:hover {
   background: linear-gradient(135deg, var(--roxo-dark) 0%, var(--roxo) 100%);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
 }
 
-.btn-add:active {
+.btn-add-task:active {
   transform: translateY(0);
 }
 
-/* Coluna Direita - Cards de Status */
-.desafio-right {
+/* Estatísticas */
+.todo-stats {
   display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
   flex-wrap: wrap;
-  gap: 1rem;
-  align-items: start;
-  min-width: 0;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow-x: hidden;
 }
 
-.status-column {
-  background: var(--branco);
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
+.stat-item {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  background: var(--branco);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  min-width: 100px;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--cinza-claro);
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--preto);
+}
+
+.stat-pendente {
+  color: #ffc107;
+}
+
+.stat-concluida {
+  color: var(--lime-green);
+}
+
+/* Container da Lista */
+.todo-list-container {
+  background: var(--branco);
+  border: 3px solid var(--roxo);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   min-height: 300px;
-  max-height: 80vh;
+}
+
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.todo-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.section-title {
+  font-size: 1.3rem;
+  color: var(--roxo);
+  font-weight: 700;
+  margin: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--roxo);
+}
+
+.tasks-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Item de Tarefa */
+.todo-item {
+  background: var(--branco);
   border: 2px solid #e0e0e0;
-  transition: all 0.3s ease;
-  flex: 1 1 200px;
-  min-width: 200px;
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
-.status-column:hover {
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
-  transform: translateY(-2px);
-}
-
-.status-header {
-  padding: 1rem 1.2rem;
+  border-radius: 12px;
+  padding: 1.25rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 3px solid;
-  font-weight: 700;
-  min-width: 0;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  animation: slideIn 0.3s ease;
 }
 
-.status-total {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
-  border-bottom-color: var(--roxo);
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.status-pendente {
-  background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 193, 7, 0.05) 100%);
-  border-bottom-color: #ffc107;
+.todo-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+  border-color: var(--roxo);
 }
 
-.status-concluida {
-  background: linear-gradient(135deg, rgba(50, 205, 50, 0.1) 0%, rgba(50, 205, 50, 0.05) 100%);
-  border-bottom-color: var(--lime-green);
+.todo-item-concluida {
+  opacity: 0.7;
+  background: #f8f9fa;
+  border-left: 4px solid var(--lime-green);
 }
 
-.status-standby {
-  background: linear-gradient(135deg, rgba(108, 117, 125, 0.1) 0%, rgba(108, 117, 125, 0.05) 100%);
-  border-bottom-color: #6c757d;
+.todo-item-concluida .todo-text {
+  text-decoration: line-through;
+  color: var(--cinza-claro);
 }
 
-.status-title {
-  font-size: 1.1rem;
-  margin: 0;
-  color: var(--preto);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.todo-item-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.status-count {
-  background: var(--preto);
+/* Checkbox Customizado */
+.todo-checkbox-wrapper {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.todo-checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.todo-checkbox-custom {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--cinza-claro);
+  border-radius: 6px;
+  background: var(--branco);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.todo-checkbox:checked ~ .todo-checkbox-custom {
+  background: var(--lime-green);
+  border-color: var(--lime-green);
+}
+
+.todo-checkbox:checked ~ .todo-checkbox-custom::after {
+  content: '✓';
   color: var(--branco);
-  padding: 0.4rem 0.9rem;
-  border-radius: 20px;
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 700;
-  min-width: 40px;
-  text-align: center;
 }
 
-.status-total .status-count {
-  background: var(--roxo);
+.todo-checkbox-wrapper:hover .todo-checkbox-custom {
+  border-color: var(--lime-green);
+  transform: scale(1.1);
 }
 
-.status-pendente .status-count {
-  background: #ffc107;
+.todo-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.todo-text {
+  font-size: 1rem;
   color: var(--preto);
+  font-weight: 500;
+  line-height: 1.5;
+  word-break: break-word;
 }
 
-.status-concluida .status-count {
+.todo-dates {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.todo-date-item {
+  font-size: 0.85rem;
+  color: var(--cinza-claro);
+  font-weight: 400;
+}
+
+.todo-date-conclusao {
+  color: var(--lime-green);
+  font-weight: 500;
+}
+
+.todo-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.btn-edit,
+.btn-delete {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
+  min-width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-edit {
+  color: var(--roxo);
+}
+
+.btn-edit:hover {
+  background: rgba(139, 92, 246, 0.1);
+  transform: scale(1.1);
+}
+
+.btn-delete {
+  color: #dc3545;
+}
+
+.btn-delete:hover {
+  background: rgba(220, 53, 69, 0.1);
+  transform: scale(1.1);
+}
+
+/* Modo de Edição */
+.todo-item-editing {
+  border-color: var(--roxo);
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.2);
+  padding: 1rem;
+}
+
+.todo-edit-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--roxo);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background: var(--branco);
+}
+
+.todo-edit-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.todo-edit-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.btn-save,
+.btn-cancel {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-save {
   background: var(--lime-green);
   color: var(--preto);
 }
 
-.status-standby .status-count {
-  background: #6c757d;
+.btn-save:hover {
+  background: var(--lime-green-dark);
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(50, 205, 50, 0.3);
 }
 
-.status-list {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 0.8rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  min-width: 0;
-}
-
-.status-list::-webkit-scrollbar {
-  width: 8px;
-}
-
-.status-list::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-}
-
-.status-list::-webkit-scrollbar-thumb {
+.btn-cancel {
   background: var(--cinza-claro);
-  border-radius: 10px;
+  color: var(--branco);
 }
 
-.status-list::-webkit-scrollbar-thumb:hover {
-  background: var(--roxo);
+.btn-cancel:hover {
+  background: #888888;
+  transform: scale(1.1);
 }
 
+/* Estado Vazio */
 .empty-state {
   text-align: center;
-  padding: 3rem 2rem;
+  padding: 4rem 2rem;
   color: var(--cinza-claro);
 }
 
-.empty-state-small {
-  text-align: center;
-  padding: 2rem 1rem;
-  color: var(--cinza-claro);
-  font-size: 0.9rem;
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .empty-message {
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 700;
   margin-bottom: 0.5rem;
   color: var(--cinza-claro);
 }
 
 .empty-hint {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--cinza-claro);
 }
 
 /* Responsividade */
-@media (min-width: 1920px) {
-  .status-column {
-    flex: 1 1 280px;
-    min-width: 280px;
-  }
-}
-
-@media (max-width: 1919px) and (min-width: 1600px) {
-  .desafio-layout {
-    grid-template-columns: minmax(320px, 380px) minmax(0, 1fr);
-    gap: 1.2rem;
-  }
-  
-  .status-column {
-    flex: 1 1 240px;
-    min-width: 240px;
-  }
-}
-
-@media (max-width: 1599px) and (min-width: 1400px) {
-  .desafio-layout {
-    grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
-    gap: 1.2rem;
-  }
-  
-  .status-column {
-    flex: 1 1 220px;
-    min-width: 220px;
-  }
-}
-
-@media (max-width: 1399px) and (min-width: 1200px) {
-  .desafio-layout {
-    grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
-    gap: 1rem;
-  }
-  
-  .status-column {
-    flex: 1 1 200px;
-    min-width: 200px;
-  }
-}
-
-@media (max-width: 1199px) {
-  .desafio-layout {
-    grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
-    gap: 1rem;
-  }
-  
-  .status-column {
-    flex: 1 1 180px;
-    min-width: 180px;
-  }
-}
-
-@media (max-width: 968px) {
-  .desafio-layout {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .desafio-left {
-    position: static;
-  }
-
-  .desafio-right {
-    flex-direction: column;
-  }
-  
-  .status-column {
-    flex: 1 1 100%;
-    min-width: 100%;
-    max-width: 100%;
-  }
-
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-}
-
 @media (max-width: 768px) {
-  .desafio-title {
+  .desafio1-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .desafio1-title {
     font-size: 2rem;
   }
 
-  .form-card {
+  .desafio1-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .todo-form-container {
     padding: 1.5rem;
     border-radius: 16px;
   }
 
-  .form-card-title {
-    font-size: 1.3rem;
+  .todo-form {
+    flex-direction: column;
+    gap: 1rem;
   }
 
-  .status-column {
-    max-height: 60vh;
+  .todo-input {
+    width: 100%;
   }
 
-  .status-header {
-    padding: 1rem 1.25rem;
+  .btn-add-task {
+    width: 100%;
   }
 
-  .status-title {
-    font-size: 1.1rem;
+  .todo-stats {
+    gap: 1rem;
   }
 
-  .status-count {
-    padding: 0.3rem 0.7rem;
-    font-size: 0.9rem;
+  .stat-item {
+    padding: 0.75rem 1rem;
+    min-width: 80px;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+
+  .todo-list-container {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .todo-item {
+    padding: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .todo-item-content {
+    width: 100%;
+    order: 1;
+  }
+
+  .todo-actions {
+    order: 2;
+    margin-left: auto;
+  }
+
+  .todo-item-editing {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .todo-edit-actions {
+    justify-content: flex-end;
   }
 }
 
 @media (max-width: 480px) {
-  .desafio-container {
-    padding: 0 var(--spacing-sm);
-  }
-
-  .desafio-title {
+  .desafio1-title {
     font-size: 1.5rem;
-    margin-bottom: 1.5rem;
   }
 
-  .form-card {
+  .desafio1-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .todo-form-container {
     padding: 1.25rem;
-    border-radius: 12px;
   }
 
-  .form-card-title {
-    font-size: 1.2rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .todo-form {
-    gap: 1.25rem;
-  }
-
-  .form-input,
-  .form-textarea,
-  .form-select {
-    padding: 0.65rem 0.9rem;
-    font-size: 0.95rem;
-  }
-
-  .btn-add {
-    padding: 0.9rem 1.5rem;
-    font-size: 1rem;
-  }
-
-  .status-column {
-    border-radius: 12px;
-    max-height: 50vh;
-  }
-
-  .status-header {
-    padding: 0.9rem 1rem;
-  }
-
-  .status-title {
-    font-size: 1rem;
-  }
-
-  .status-list {
-    padding: 0.75rem;
+  .todo-stats {
+    flex-direction: column;
     gap: 0.75rem;
   }
 
-  .empty-state {
-    padding: 2rem 1.5rem;
+  .stat-item {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
   }
 
-  .empty-message {
+  .todo-list-container {
+    padding: 1.25rem;
+  }
+
+  .section-title {
     font-size: 1.1rem;
+  }
+
+  .todo-item {
+    padding: 0.9rem;
+  }
+
+  .todo-text {
+    font-size: 0.95rem;
   }
 }
