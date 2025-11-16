@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.e7413aad.css",
-    "main.js": "/static/js/main.e0792b77.js",
-    "static/js/317.53f89125.chunk.js": "/static/js/317.53f89125.chunk.js",
-    "index.html": "/index.html",
-    "main.e7413aad.css.map": "/static/css/main.e7413aad.css.map",
-    "main.e0792b77.js.map": "/static/js/main.e0792b77.js.map",
-    "317.53f89125.chunk.js.map": "/static/js/317.53f89125.chunk.js.map"
+    "main.css": "/Cotefacil/static/css/main.e7413aad.css",
+    "main.js": "/Cotefacil/static/js/main.20baad68.js",
+    "static/js/317.53f89125.chunk.js": "/Cotefacil/static/js/317.53f89125.chunk.js",
+    "index.html": "/Cotefacil/index.html",
+    "main.e7413aad.css.map": "/Cotefacil/static/css/main.e7413aad.css.map",
+    "main.20baad68.js.map": "/Cotefacil/static/js/main.20baad68.js.map",
+    "317.53f89125.chunk.js.map": "/Cotefacil/static/js/317.53f89125.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e7413aad.css",
-    "static/js/main.e0792b77.js"
+    "static/js/main.20baad68.js"
   ]
 }

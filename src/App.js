@@ -9,7 +9,7 @@ import './styles/global.css';
 function App() {
   return (
     <TasksProvider>
-      <Router>
+      <Router basename="/Cotefacil">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/desafio1" element={<Desafio1 />} />
