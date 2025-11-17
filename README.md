@@ -53,11 +53,14 @@ npm run dev
 
 O servidor backend estará rodando na porta **3001**.
 
-**Nota:** Antes de iniciar o backend, crie um arquivo chamado .env dentro da pasta backend contendo exatamente estas variáveis, preenchidas com os valores:
+**Nota:** Antes de iniciar o backend, crie um arquivo chamado .env dentro da pasta backend contendo exatamente estas variáveis, que serão utilizadas para autenticação na Unsplash API:
 
-MINIO_USER_ID=<INSIRA_AQUI_O_USER_ID_FORNECIDO>
-MINIO_ACCESS_KEY=<INSIRA_AQUI_A_ACCESS_KEY_FORNECIDA>
-MINIO_SECRET_KEY=<INSIRA_AQUI_A_SECRET_KEY_FORNECIDA>
+MINIO_USER_ID 
+<INSIRA_AQUI_O_USER_ID>
+
+MINIO_ACCESS_KEY <INSIRA_AQUI_A_ACCESS_KEY>
+
+MINIO_SECRET_KEY <INSIRA_AQUI_A_SECRET_KEY>
 
 ### Passo 3: Iniciar o Frontend
 
