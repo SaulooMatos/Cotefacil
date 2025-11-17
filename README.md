@@ -53,7 +53,11 @@ npm run dev
 
 O servidor backend estará rodando na porta **3001**.
 
-**Nota:** O arquivo `.env` já está configurado na pasta `backend` com as credenciais da API Unsplash. O backend utilizará a API real para buscar imagens no Desafio 2.
+**Nota:** Antes de iniciar o backend, crie um arquivo chamado .env dentro da pasta backend contendo exatamente estas variáveis, preenchidas com os valores:
+
+MINIO_USER_ID=<INSIRA_AQUI_O_USER_ID_FORNECIDO>
+MINIO_ACCESS_KEY=<INSIRA_AQUI_A_ACCESS_KEY_FORNECIDA>
+MINIO_SECRET_KEY=<INSIRA_AQUI_A_SECRET_KEY_FORNECIDA>
 
 ### Passo 3: Iniciar o Frontend
 
